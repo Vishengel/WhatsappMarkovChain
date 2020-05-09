@@ -1,4 +1,4 @@
-import random, os
+import argparse, random, os
 from whatsapp_data import WhatsappData
 
 class Markov_Chain():
@@ -48,6 +48,15 @@ class Markov_Chain():
         print(sentence)
 
 if __name__ == "__main__":
-    markov_chain = Markov_Chain(os.path.join('data', 'stubnitz.txt'))
-    for idx in range(10):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("logfile", help="File path of the Whatsapp text log relative to this script's path",
+                        type=str)
+    parser.add_argument("n_msgs", help="Number of messages to generate",
+                        type=int)
+    parser.add_argument("--n", dest="chain_len", help="N-gram size", default=2,
+                        type=int)
+    args = parser.parse_args()
+
+    markov_chain = Markov_Chain(args.logfile, args.chain_len)
+    for idx in range(args.n_msgs):
         markov_chain.generate_message()
